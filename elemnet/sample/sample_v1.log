@@ -1,0 +1,15 @@
+
+2024-01-06 16:48:46.101737:job config: {'train_data_path': '../data/train_set.csv', 'test_data_path': '../data/test_set.csv', 'label': 'delta_e', 'input_type': None, 'log_folder': 'sample', 'log_file': 'sample.log', 'test_metric': 'mae', 'architecture': '1024x4D-512x3D-256x3D-128x3D-64x2-32x1-1', 'loss_type': 'mae', 'config_file': 'sample/job.config', 'use_valid': False, 'project': 'ElemNet', 'input_types': ['elements_tl'], 'regressors': None, 'paramsGrid': {'optimizer': 'Adam', 'learning_rate': 0.0001, 'patience': 200, 'dropouts': [0.8, 0.9, 0.7, 0.8], 'EVAL_FREQUENCY': 1000}, 'save_path': 'sample/sample_model', 'dataset': 'OQMD', 'model_path': './save_model'}
+2024-01-06 16:48:46.101796:train data path is  ../data/train_set.csv
+2024-01-06 16:48:53.011174:input attribute sets are:  ['elements_tl']
+2024-01-06 16:48:53.011482:test data path is  ../data/test_set.csv
+2024-01-06 16:48:53.731832:input attributes are:  ['H', 'Li', 'Be', 'B', 'C', 'N', 'O', 'F', 'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Ru', 'Rh', 'Pd', 'Ag', 'Cd', 'In', 'Sn', 'Sb', 'Te', 'I', 'Xe', 'Cs', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'W', 'Re', 'Os', 'Ir', 'Pt', 'Au', 'Hg', 'Tl', 'Pb', 'Bi', 'Ac', 'Th', 'Pa', 'U', 'Np', 'Pu']
+2024-01-06 16:48:53.731949:label: delta_e
+2024-01-06 16:48:57.988751: train, test, valid sizes:  (307305, 86) (307305,) (34145, 86) (34145,) (34145, 86) (34145,)
+2024-01-06 16:48:59.812208:train matrix shape of train_X:  (307305, 86)  train_y:  (307305,)
+2024-01-06 16:48:59.812348:valid matrix shape of train_X:  (34145, 86)  valid_y:  (34145,)
+2024-01-06 16:48:59.812390:test matrix shape of valid_X:   (34145, 86)  test_y:  (34145,)
+2024-01-06 16:48:59.812425:architecture is:  1024x4D-512x3D-256x3D-128x3D-64x2-32x1-1
+2024-01-06 16:48:59.812463:learning rate is  0.0001
+2024-01-06 16:49:03.159408:Initialized
+2024-01-06 16:49:03.159608:Restoring model from ./save_model/model_1024x4D-512x3D-256x3D-128x3D-64x2-32x1-1.pt

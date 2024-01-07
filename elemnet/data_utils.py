@@ -143,7 +143,7 @@ def parse_formula(formula):
     # print 'final:', formula, res
     if any([e for e in res if e in ['T', 'D', 'G', 'M', 'Q']]):
         print (formula, res)
-    sum_nums = 1. * sum(res.values())
+    sum_nums = 1. * sum(res.values)
     for k in res: res[k] = 1. * res[k] / sum_nums
     return res
 
@@ -180,14 +180,14 @@ def load_csv(train_data_path, test_data_path=None, input_types = None, label =No
             input_attributes += input_atts[input_type]
     logger.fprint('input attributes are: ', input_attributes)
     logger.fprint('label:', label)
-    train_X = data_f[input_attributes].as_matrix()
-    train_y = data_f[label].as_matrix()
+    train_X = data_f[input_attributes].values
+    train_y = data_f[label].values
     logger.fprint(data_f.describe())
-    test_X = data_ft[input_attributes].as_matrix()
-    test_y = data_ft[label].as_matrix()
+    test_X = data_ft[input_attributes].values
+    test_y = data_ft[label].values
     logger.fprint(data_ft.describe())
-    valid_X = data_fv[input_attributes].as_matrix()
-    valid_y = data_fv[label].as_matrix()
+    valid_X = data_fv[input_attributes].values
+    valid_y = data_fv[label].values
     logger.fprint(data_fv.describe())
     logger.fprint(' train, test, valid sizes: ', train_X.shape, train_y.shape, test_X.shape, test_y.shape, valid_X.shape, valid_y.shape)
     return train_X, train_y, valid_X, valid_y, test_X, test_y

@@ -9,13 +9,16 @@ import sys
 import traceback
 
 import numpy as np
-import tensorflow as tf
-import tensorflow.contrib.slim as slim
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
+import tf_slim as slim
+# import tensorflow.contrib.slim as slim
 import time
 from data_utils import *
 from sklearn import preprocessing
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from tensorflow.python import debug as tf_debug
+# from tensorflow.python import debug as tf_debug
 from train_utils import *
 
 parser = argparse.ArgumentParser(description='run ml regressors on dataset',argument_default=argparse.SUPPRESS)
@@ -30,11 +33,14 @@ parser.add_argument('--priority', help='priority of this job', default=0, type=i
 
 args,_ = parser.parse_known_args()
 
-hyper_params = {'batch_size':32, 'num_epochs':4000, 'EVAL_FREQUENCY':1000, 'learning_rate':1e-4, 'momentum':0.9, 'lr_drop_rate':0.5, 'epoch_step':500, 'nesterov':True, 'reg_W':0., 'optimizer':'Adam', 'reg_type':'L2', 'activation':'relu', 'patience':100}
-
+# hyper_params = {'batch_size':32, 'num_epochs':4000, 'EVAL_FREQUENCY':1000, 'learning_rate':1e-4, 'momentum':0.9, 'lr_drop_rate':0.5, 'epoch_step':500, 'nesterov':True, 'reg_W':0., 'optimizer':'Adam', 'reg_type':'L2', 'activation':'relu', 'patience':100}
+hyper_params = {'batch_size':32, 'num_epochs':1, 'EVAL_FREQUENCY':1000, 'learning_rate':1e-4, 'momentum':0.9, 'lr_drop_rate':0.5, 'epoch_step':500, 'nesterov':True, 'reg_W':0., 'optimizer':'Adam', 'reg_type':'L2', 'activation':'relu', 'patience':100}
 # NN architecture
 
 SEED = 66478
+
+gpus = tf.config.list_physical_devices('GPU')
+tf.config.set_visible_devices(gpus[1], 'GPU')
 
 def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, logger=None, config=None):
     assert config is not None
@@ -63,9 +69,12 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, logger=No
             if 'x' in arch:
                 arch = arch.split('x')
                 num_outputs = int(re.findall(r'\d+',arch[0])[0])
+                print(num_outputs)
                 layers = int(re.findall(r'\d+',arch[1])[0])
+                print(layers)
                 j = 0
                 aux_layers = re.findall(r'[A-Z]',arch[0])
+                print(aux_layers)
                 for l in range(layers):
                     if aux_layers and aux_layers[0] == 'B':
                         if len(aux_layers)>1 and aux_layers[1]=='A':
@@ -146,6 +155,7 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, logger=No
         return 100.0 - (100.0 * np.sum(np.argmax(predictions, 1) == labels) / predictions.shape[0])
 
     tf.reset_default_graph()
+    # tf.compat.v1.reset_default_graph()
     train_X = train_X.reshape(train_X.shape[0], -1).astype("float32")
     valid_X = valid_X.reshape(valid_X.shape[0], -1).astype("float32")
     test_X = test_X.reshape(test_X.shape[0], -1).astype("float32")
@@ -190,6 +200,7 @@ def run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, logger=No
     rr.fprint('learning rate is ',learning_rate)
 
     train_data_node = tf.placeholder(tf.float32, shape=(batch_size, num_input))
+    # train_data_node = tf.compat.v1.placeholder(tf.float32, shape=(batch_size, num_input))
     eval_data = tf.placeholder(tf.float32, shape=(batch_size, num_input))
 
     logits,_ = model_slim(train_data_node, architecture, dropouts=dropouts)
@@ -311,6 +322,7 @@ if __name__=='__main__':
                                                                   test_data_path=config['test_data_path'],
                                                                   input_types=config['input_types'],
                                                                   label=config['label'], logger=logger)
+
     run_regressors(train_X, train_y, valid_X, valid_y, test_X, test_y, logger=logger, config=config)
     logger.fprint('done')
 
